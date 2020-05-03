@@ -1,0 +1,211 @@
+
+import os
+def info():
+	print("Press 1:To start the docker Tool")
+	print("Press 2:To work on Images")
+	print("Press 3:To work on Containers")
+	print("Press 4:To work on Network")
+	print("Press 5:To work on Volume")
+	print("press 6:To Exit")
+	
+os.system("tput setaf 1")
+
+print("\t\t\tWelcome to Smart TUI of docker")
+os.system("tput setaf 7")
+print("\t\t\t------------------------")
+os.system("tput setaf 4")
+os.system("tput setab 2")
+
+ch=input("\t\tExcited to know about Docker!! Press y/n :")
+os.system("tput setaf 7")
+os.system("tput setab 0")
+if ch=='y'or ch=='Y':
+	docker_intro="Docker is basically a container engine which uses the Linux 	  Kernel features like namespaces and control groups to create containers on top 	 	of an operating system and automates application deployment on the container."
+	
+	os.system("espeak-ng {}".format(docker_intro))	
+
+
+while True:
+	info()
+	choice=int(input("Enter your choice"))
+
+	if choice == 1:
+		os.system("systemctl start docker")
+		os.system("tput setaf 5")
+		print("Also want to see the status of docker press y/n",end="...")
+		os.system("tput setaf 7")
+		status_input=input()
+		if status_input =='y'or status_input =='Y':
+			os.system("systemctl status docker")
+	elif choice == 2:
+		os.system("tput setaf 3")
+		os.system("tput setab 5")
+		print("Press 1:To know about the Images in Docker")
+		print("Press 2:To pull the image")
+		print("Press 3:To save the image and transfer it to specific system")
+		print("Press 4:To create our own image")
+		print("Press 5:To push the image on docker hub")
+		print("Press 6:To see the list of images")
+		print("Press 7:To exit from this option")
+		os.system("tput setaf 7")
+		while True:
+			image_ch=int(input("Enter Your Choice :"))
+			if image_ch == 1:
+				image_intro="A Docker container image is a lightweight, 			standalone, executable package of software that includes 				everything needed to run an application: code, runtime, system 				tools, system libraries and settings"
+				os.system("espeak-ng {}".format(image_intro))
+			elif image_ch == 2:
+				img_name=input("Enter the name of image :")
+				os.system("docker pull {}".format(img_name))
+			elif image_ch == 3:
+				
+				image_name=input("Enter the name of Image to save :")
+				file_name=input("Enter the name of file in which u want to 				save :")
+				IP_add=input("Enter the IP address of system where u want to 				transfer :")
+				os.system("docker save {0} -o 					 {1}.tar".format(image_name,file_name))
+				#os.system("yum install openssh-clients")
+				os.system("scp {0}.tar root@{1}/root".format(file_name,IP_add))
+				remote_in=input("Do You want to load this image in remote 				system y/n :")
+				
+				
+				if remote_in == 'y':
+					os.system("tput setaf 4")
+					print("Make sure that you should know root 						password")
+					os.system("tput setaf 7")
+					os.system("ssh {0} docker load -i {1}.tar".format(IP_add,file_name))
+					
+					
+			elif image_ch == 4:
+				os_name=input("Enter the name of OS from which u want 					to create image :")
+				imag_name=input("Enter the name of image u want to create :")
+				os.system("docker commit {0} {1}".format(os_name,imag_name))
+			elif image_ch == 5:
+				user_ch=input("Do You have acccount in docker hub and internet 						connectivity press y/n :")
+				if user_ch == 'y':
+					im_name=input("Enter the image name :")
+					user_name=input("Enter your user name or id that u have 				in docker hub :") 
+					os.system("docker tag {0} {1}/	{0}".format(im_name,user_name))
+				else:
+					os.system("tput setaf 5")
+					print("Please go to dockerhub.com , make account and 						then come again")
+					os.system("tput setaf 7")
+			elif image_ch == 6:
+				os.system("docker images")				
+			elif image_ch == 7:
+				break
+			else:
+				print("Enter valid option")
+
+	elif choice == 3:
+		os.system("tput setab 2")
+		os.system("tput setaf 6")
+		print("/t/t/tNOTE 1: You can type exit when u are inside the container, this 					will get out of container")
+		os.system("tput setaf 5")
+		print("/t/t/tNOTE 2: You can press Ctrl+p+q, this will get u out from container,without closing the container")
+		os.system("tput setaf 4")
+		print("Press 1:Excited to know what is container?")
+		print("Press 2:To run the container")
+		print("Press 3:To know the information about launched contaniner")
+		print("Press 4:TO see the list of running containers ")
+		print("Press 5:To see the list of background containers, also have a option to 		start and attach that container")
+		print("Press 6:To exit from this option")
+		while True:
+			cont_ch=int(input("Enter your choice :"))
+			if cont_ch == 1:
+				cont_intro="A container is a standard unit of software 					that packages up code and all its dependencies so the 					application runs quickly and reliably from one 					computing environment to another"
+				os.system("espeak-ng {}".format(cont_intro))
+			elif cont_ch == 2:
+				cont_name=input("Enter the name u want to give to container :")
+				cont_img_name=input("Enter the name of image from which u want 				to launch the container :")
+				web_name_ch=input("Do you want to run the container in the specific network press y/n :")
+				if web_name_ch == 'y':
+					web_name=input("Enter the network name :")
+					os.system("docker container run -it --name {0} --network {2} {1}".format(cont_name,cont_img_name,web_name))
+				else:	
+					os.system("docker container run -it --name {0} 	{1}".format(cont_name,cont_img_name))
+			elif cont_ch == 3:
+				container_name=input("Enter the container name: ")
+				os.system("docker container inspect {}".format(container_name))
+			elif cont_ch == 4:
+				os.system("docker container ls")
+			elif cont_ch == 5:
+				os.system("docker container ls -a")
+				start_ch=input("Do u want to start the container Press y/n :")
+				if start_ch=='y':
+					start_name=input("Enter the name of container :")
+					os.system("docker container start {}".format(start_name))
+					attach_ch=input("Do you want to go inside the container Press y/n :")
+					if attach_ch == 'y':
+						os.system("docker container attach {}".format(start_name))
+			elif cont_ch == 6:
+				break
+			else:
+				print("Option is Invalid")
+	elif choice == 4:
+		os.system("tput setab 6")
+		os.system("tput setaf 3")
+		print("Press 1:To know about networking in docker")
+		print("Press 2:To Create our own network")
+		print("Press 3:To know the info of network")
+		print("Press 4:To see the list of networks")
+		print("Press 5:To do the Patting")
+		print("Press 6:To exit from the option")
+		os.system("tput setaf 7")
+		while True:
+			net_ch=int(input("Enter your choice :"))
+			if net_ch == 1:
+				net_info="To build web applications that act in concert 				but doso securely, create a network. Networks provide 			                complete isolation for containers. You can add 					containers to a network when you first run a container"
+				os.system("espeak-ng {}".format(net_info))
+			elif net_ch ==2:
+				net_name=input("Enter the name of network :")
+				os.system("docker network create --driver bridge {}".format(	
+			net_name))
+			
+			elif net_ch ==3:
+				network_name=input("Enter the name of network :")
+				os.system("docker network inspect {}".format(network_name))
+			elif net_ch ==4:
+				os.system("docker network ls")
+			elif net_ch ==5:
+				OS_name=input("Enter the name for new container :")
+				IMG_name=input("Enter the image name for launching container :")
+				port_no=int(input("Enter the port no :"))
+				os.system("docker run -dit --name {} -p {}:80 {}".format(OS_name,IMG_name,port_no))
+			elif net_ch == 6:
+				break
+			else:
+				print("Option is Invalid")
+	elif choice == 5:
+		os.system("tput setab 0")
+		os.system("tput setaf 4")
+		print("Press 1:To know about the volume in docker")
+		print("Press 2:To create volume")
+		print("Press 3:To attach or mount volume to container")
+		print("Press 4:To exit")
+		os.system("tput setaf 7")
+		while True:
+			vol_ch=int(input("Enter your choice :"))
+			if vol_ch == 1:
+				vol_info="A volume is a persistent data.It is used to  					quickly allow other containers to mount"
+				os.system("espeak-ng {}".format(vol_info))
+			elif vol_ch ==2:
+				vol_name=input("Enter the name of volume :")
+				os.system("docker volume create {}".format(vol_name))
+			elif vol_ch ==3:
+				os_Name=input("Enter the container name: ")
+				img_Name=input("Enter the Image name: ")
+				vol_Name=input("Enter the volume name: ")
+				os.system("docker run -it --name {} {}:/var/www/html {}".format(os_Name,vol_Name,img_Name))
+			elif vol_ch ==4:
+					break
+	elif choice == 6:
+		exit()
+	else:
+		print("Please Enter valid choice")
+	 			
+
+
+	
+
+
+	
+
