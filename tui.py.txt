@@ -11,7 +11,14 @@ def info():
 	os.system("tput setaf 5")
 	print("Press 5:To work on Volume")
 	os.system("tput setaf 6")
-	print("press 6:To Exit")
+	print("\tPress 6:To Install the Docker-compose")
+	os.system("tput setaf 3")
+	print("\tPress 7:To Launch the Wordpress site")
+	os.system("tput setaf 4")
+	print("\tPress 8:To close the Wordpress site")
+	os.system("tput setaf 5") 	
+	print("\tPress 9:To exit")
+	
 	
 os.system("tput setaf 1")
 
@@ -199,6 +206,13 @@ while True:
 			elif vol_ch ==4:
 					break
 	elif choice == 6:
+		os.system("curl -L "https://github.com/docker/compose/releases/download/1.25.5/docker-compose-$(uname -s)-$(uname -m)" -				o /usr/local/bin/docker-compose")
+		os.system("chmod +x /usr/local/bin/docker-compose")	
+	elif choice == 7:
+		os.system("docker-compose up")	
+	elif choice == 8:
+		os.system("docker-compose down")
+	elif choice == 9:
 		exit()
 	else:
 		print("Please Enter valid choice")
